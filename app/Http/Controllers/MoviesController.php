@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\ViewModels\GetMovieViewModel;
-use App\ViewModels\MovieView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -20,6 +19,9 @@ class MoviesController extends Controller
         ->json()['results'];
         $upcomingMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/movie/upcoming')
         ->json()['results'];
+        $nowplayingMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/discover/movie?with_origin_country=IN')
+        ->json()['results'];
+        // dump($nowplayingMovie);
         $genresMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/genre/movie/list')
         ->json()['genres'];
         $genres = collect($genresMovie)->mapWithKeys(function($genres){
@@ -27,7 +29,7 @@ class MoviesController extends Controller
         });
         // dump($upcomingMovie);
         // dump($genres);
-        return view('index',compact('popularMovie','genres','topRatedShow','upcomingMovie'));
+        return view('index',compact('popularMovie','genres','topRatedShow','upcomingMovie','nowplayingMovie'));
     }
 
     /**
@@ -36,20 +38,22 @@ class MoviesController extends Controller
     public function allmovies()
     {
 
-        $popularMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/movie/popular')
+        $popularMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/movie/popular?page=2')
         ->json()['results'];
-        $topRatedMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/movie/top_rated')
+        $topRatedMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/discover/movie?with_origin_country=IN&page=2')
         ->json()['results'];
-        $upcomingMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/movie/upcoming')
+        $upcomingMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/movie/upcoming?page=2')
+        ->json()['results'];
+        $nowplayingMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/movie/now_playing?page=3')
         ->json()['results'];
         $genresMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/genre/movie/list')
         ->json()['genres'];
         $genres = collect($genresMovie)->mapWithKeys(function($genres){
             return [$genres['id'] => $genres['name']];
         });
-        // dump($upcomingMovie);
+        dump($topRatedMovie);
         // dump($genres);
-        return view('movies',compact('popularMovie','genres','topRatedMovie','upcomingMovie'));
+        return view('movies',compact('popularMovie','genres','topRatedMovie','upcomingMovie','nowplayingMovie'));
     }
 
     /**
@@ -67,7 +71,7 @@ class MoviesController extends Controller
     {
         $viewMovie = Http::withToken(config('services.tmdb.api_token'))->get('https://api.themoviedb.org/3/movie/'.$id.'?append_to_response=credits,videos,images')
         ->json();
-        // dump($getMovie);
+        // dump($viewMovie);
         // $movie =  new GetMovieViewModel($viewMovie);
         // dump($viewMovie);
         // $viewMovie = $viewMovies->movie;

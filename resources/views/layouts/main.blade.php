@@ -99,6 +99,8 @@
                     }
                   }
         });
+        // SWIPER 
+
     </script>
 
 </body>
