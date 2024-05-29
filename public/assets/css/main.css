@@ -1,0 +1,35 @@
+body{
+  background-color: rgb(38, 39, 43);
+  color: white;
+  font-size: 15px;
+}
+
+.text-low{
+  color: grey;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+.swiper-wrapper{
+  height: auto !important;
+}
+.swiper-slide{
+  /* margin-right: 24px !important; */
+  height: auto !important;
+}
+.scroll-swiper{
+  margin-top: 4rem;
+}
+.swiper-scrollbar-drag{
+  background: rgb(255, 255, 255) !important;
+}
+.swiper-scrollbar{
+  background:rgb(97, 97, 97) !important;
+}
+.swiper-pagination-bullet{
+  background: rgb(255, 255, 255) !important;
+  width: 12px !important;
+  height: 12px !important;
+}
+/* .swiper-pagination-bullet.active{
+  background: rgb(255, 255, 255) !important;
+} */
